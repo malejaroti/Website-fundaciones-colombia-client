@@ -1,3 +1,21 @@
 @import "tailwindcss";
 #root {
 }
+
+select {
+  border: 1px rgb(209, 208, 208) solid;
+  border-radius: 3px;
+  padding: 2px;
+  text-align: center;
+  margin-left: 2px;
+  align-self: flex-end;
+}
+
+.selector-row {
+  font-size: 0.8rem;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  /* border: 2px red solid; */
+  width: 90%;
+}
