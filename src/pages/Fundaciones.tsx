@@ -37,6 +37,7 @@ function Fundaciones() {
                 <div className="selector-row flex gap-2 justify-between ">
                     <label > Departamento: </label>
                     <select name="department" id="department-select" className="w-[210px]" onChange={handleDepartmentSelect}>
+                        <option value=""></option>
                         {departamentos_ciudades_Colombia.map((eachDepartment) => (
                             <option key={eachDepartment.name}> {eachDepartment.name}</option>
                         ))}
@@ -46,7 +47,6 @@ function Fundaciones() {
                     <label > Ciudad: </label>
                     <select name="department" id="department-select" className="w-[210px]" >
                         {
-
                             department.cities.map((eachCity) => (
                                 <option key={eachCity} value={eachCity} > {eachCity}</option>
                             ))}
@@ -69,6 +69,16 @@ function Fundaciones() {
                     </select>
                 </div>
 
+            </div>
+
+            <div className="foundation-card flex border-slate-500 rounded-2xl shadow-xl m-5 items-center gap-3 p-3">
+                <div className="logo w-20 h-20 border "></div>
+                <div className="card-text-side text-sm">
+                    <h1 className="text-lg">Foundation Name</h1>
+                    <p>Sede principal</p>
+                    <p>descripcion</p>
+                    <div className="causas">Causas</div>
+                </div>
             </div>
         </div >
     )
