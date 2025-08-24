@@ -1,15 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { departamentosColombia } from "../data/departamentos"
 import { causas } from "../data/causas";
 import { departamentos_ciudades_Colombia, type Departamento } from "../data/departments-cities";
+import axios from "axios";
 
 function Fundaciones() {
     const [department, setDepartment] = useState<Departamento>({
         "name": "",
         "cities": []
     });
+    const [allFoundations, setAllFoundations] = useState([]);
 
-    console.log(`cities in deparment:`, department.cities)
+    useEffect(() => {
+        getData();
+
+
+    }, [])
+
+    const getData = async () => {
+        try {
+            const responseApi = await axios.get(`http://localhost:5005/foundations/`);
+            // console.log(`Response API:`, responseApi.data);
+            setAllFoundations(responseApi.data)
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+
+    console.log(`cities in deparment: `, department.cities)
 
     const handleDepartmentSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
@@ -46,15 +67,16 @@ function Fundaciones() {
                 <div className="selector-row flex gap-2">
                     <label > Ciudad: </label>
                     <select name="department" id="department-select" className="w-[210px]" >
-                        {
-                            department.cities.map((eachCity) => (
-                                <option key={eachCity} value={eachCity} > {eachCity}</option>
-                            ))}
+                        <option value=""></option>
+                        {department.cities.map((eachCity) => (
+                            <option key={eachCity} value={eachCity} > {eachCity}</option>
+                        ))}
                     </select>
                 </div>
                 <div className="selector-row flex gap-2 ">
                     <label > Causa: </label>
                     <select name="causa" id="causa-select" className="w-[210px] text-xs">
+                        <option value=""></option>
                         {causas.map((department) => (
                             <option key={department} value={department} > {department}</option>
                         ))}
@@ -63,6 +85,7 @@ function Fundaciones() {
                 <div className="selector-row flex gap-2 ">
                     <label > Beneficiarios: </label>
                     <select name="beneficiarios" id="beneficiarios-select" className="w-[210px]">
+                        <option value=""></option>
                         {causas.map((eachBenefitiaryType) => (
                             <option key={eachBenefitiaryType} value={eachBenefitiaryType} > {eachBenefitiaryType}</option>
                         ))}
@@ -71,15 +94,19 @@ function Fundaciones() {
 
             </div>
 
-            <div className="foundation-card flex border-slate-500 rounded-2xl shadow-xl m-5 items-center gap-3 p-3">
-                <div className="logo w-20 h-20 border "></div>
-                <div className="card-text-side text-sm">
-                    <h1 className="text-lg">Foundation Name</h1>
-                    <p>Sede principal</p>
-                    <p>descripcion</p>
-                    <div className="causas">Causas</div>
-                </div>
-            </div>
+            {
+                allFoundations.map((foundation) => (
+                    <div className="foundation-card flex border-slate-500 rounded-2xl shadow-xl m-5 items-center gap-3 p-3">
+                        <div className="logo min-w-20 h-20 border "></div>
+                        <div className="card-text-side text-sm">
+                            <h1 className=" mb-1 text-lg font-bold text-amber-950">{foundation.name}</h1>
+                            <p className="mb-1 ">📍{foundation.city}, {foundation.department}</p>
+                            <p className="mb-1 text-xs">{foundation.description}</p>
+                            <div className="causas">{foundation.causes}</div>
+                        </div>
+                    </div>
+                ))
+            }
         </div >
     )
 }
