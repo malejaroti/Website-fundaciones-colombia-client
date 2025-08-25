@@ -4,12 +4,23 @@ import { causas } from "../data/causas";
 import { departamentos_ciudades_Colombia, type Departamento } from "../data/departments-cities";
 import axios from "axios";
 
+type Foundation = {
+    logo: string;
+    name: string;
+    linkedIn: string;
+    instagram: string;
+    city: string;
+    department: string;
+    description: string;
+    causes: string;
+};
+
 function Fundaciones() {
     const [department, setDepartment] = useState<Departamento>({
         "name": "",
         "cities": []
     });
-    const [allFoundations, setAllFoundations] = useState([]);
+    const [allFoundations, setAllFoundations] = useState<Foundation[]>([]);
 
     useEffect(() => {
         getData();
@@ -45,7 +56,7 @@ function Fundaciones() {
 
 
     return (
-        <div className="h-screen border-6 border-amber-800 mt-[66px]">
+        <div className="h-screen overflow-y-scroll border-6 border-amber-800 mt-[66px]">
 
             <div className="h-[50px] flex items-center justify-center">
                 <input type="text" placeholder="Search foundation by name"
@@ -96,8 +107,16 @@ function Fundaciones() {
 
             {
                 allFoundations.map((foundation) => (
-                    <div className="foundation-card flex border-slate-500 rounded-2xl shadow-xl m-5 items-center gap-3 p-3">
-                        <div className="logo min-w-20 h-20 border "></div>
+                    <div className="foundation-card  relative flex border-slate-500 rounded-2xl shadow-xl m-5 items-center gap-3 p-3">
+                        <img className="logo self-start mt-2 min-w-20 h-20 shadow-2xl rounded-sm" src={foundation.logo} alt={`Logo ${foundation.name}`} />
+                        <div className="socials absolute right-[20px] top-[10px] flex gap-1 md:gap-3">
+                            <a href={foundation.linkedIn} target="_blank" rel="noopener noreferrer">
+                                <img src="/LinkedIn-logo.png" alt="LinkedIn logo" className="w-6 h-6" />
+                            </a>
+                            <a href={foundation.instagram} target="_blank" rel="noopener noreferrer">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram logo" className="w-6 h-6" />
+                            </a>
+                        </div>
                         <div className="card-text-side text-sm">
                             <h1 className=" mb-1 text-lg font-bold text-amber-950">{foundation.name}</h1>
                             <p className="mb-1 ">📍{foundation.city}, {foundation.department}</p>
