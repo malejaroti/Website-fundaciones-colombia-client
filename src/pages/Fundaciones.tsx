@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { departamentosColombia } from "../data/departamentos"
-import { causas } from "../data/causas";
+// import { departamentosColombia } from "../data/departamentos"
+import { causas_arr } from "../data/causes_arr";
 import { departamentos_ciudades_Colombia, type Departamento } from "../data/departments-cities";
 import axios from "axios";
+import Chip from "../components/Chip";
 
 type Foundation = {
     logo: string;
@@ -12,7 +13,7 @@ type Foundation = {
     city: string;
     department: string;
     description: string;
-    causes: string;
+    causes: string[];
 };
 
 function Fundaciones() {
@@ -88,20 +89,20 @@ function Fundaciones() {
                     <label > Causa: </label>
                     <select name="causa" id="causa-select" className="w-[210px] text-xs">
                         <option value=""></option>
-                        {causas.map((department) => (
-                            <option key={department} value={department} > {department}</option>
+                        {causas_arr.map((eachCause) => (
+                            <option key={eachCause.name} value={eachCause.name} > {eachCause.name}</option>
                         ))}
                     </select>
                 </div>
-                <div className="selector-row flex gap-2 ">
+                {/* <div className="selector-row flex gap-2 ">
                     <label > Beneficiarios: </label>
                     <select name="beneficiarios" id="beneficiarios-select" className="w-[210px]">
                         <option value=""></option>
-                        {causas.map((eachBenefitiaryType) => (
+                        {causas_arr.map((eachBenefitiaryType) => (
                             <option key={eachBenefitiaryType} value={eachBenefitiaryType} > {eachBenefitiaryType}</option>
                         ))}
                     </select>
-                </div>
+                </div> */}
 
             </div>
 
@@ -121,7 +122,24 @@ function Fundaciones() {
                             <h1 className=" mb-1 text-lg font-bold text-amber-950">{foundation.name}</h1>
                             <p className="mb-1 ">📍{foundation.city}, {foundation.department}</p>
                             <p className="mb-1 text-xs">{foundation.description}</p>
-                            <div className="causas">{foundation.causes}</div>
+                            <div className="chips-container flex flex-wrap gap-1">
+                                {foundation.causes.map((eachCause) => {
+                                    // console.log(`type of cause from DB:`, typeof (eachCause))
+                                    // console.log(`type of cause from array:`, typeof (causas_arr[3].name))
+                                    const foundCause = causas_arr.find((cause) => cause.name === eachCause)
+                                    
+                                    console.log(`Found Cause`, foundCause)
+                                    if (!foundCause) return null;
+                                    return (
+                                        <Chip
+                                            key={foundCause.name}
+                                            label={foundCause.name}
+                                            color={foundCause.color}
+                                        />
+                                    )
+                                })}
+                            </div>
+                            {/* <div className="causas">{foundation.causes}</div> */}
                         </div>
                     </div>
                 ))
