@@ -8,7 +8,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 function MyNavbar() {
     return (
         <>
-            <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary" exp>
+            <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
                 <Container>
                     <Navbar.Brand to={"/"} as={Link} className="flex items-center gap-2"
                     >

@@ -3,17 +3,19 @@ import { causas_arr } from "../data/causes_arr";
 import { departamentos_ciudades_Colombia, type Departamento } from "../data/departments-cities";
 import axios from "axios";
 import Chip from "../components/Chip";
-import Select from "../components/Select";
+import MySelect from "../components/Select";
 
-type Foundation = {
-    logo: string;
+export type Foundation = {
     name: string;
+    description: string;
+    department: string;
+    city: string;
+    causes: string[];
+    beneficiaries: string[];
+    logo: string;
     linkedIn: string;
     instagram: string;
-    city: string;
-    department: string;
-    description: string;
-    causes: string[];
+    website: string;
 };
 
 function Fundaciones() {
@@ -69,39 +71,42 @@ function Fundaciones() {
             <div className="filters flex flex-col justify-around md:flex-row items-center gap-2 p-2 m-2 mb-3 ">
                 <div className="selector-row flex gap-2">
                     <label > Departmento: </label>
-                    <Select array={departamentos_ciudades_Colombia} name="department" id="department-select2" className="w-[210px]" onChange={handleDepartmentSelect}></Select>
+                    <MySelect array={departamentos_ciudades_Colombia} name="department" id="department-select2" className="w-[210px]" onChange={handleDepartmentSelect}></MySelect>
                 </div>
 
                 <div className="selector-row flex gap-2">
                     <label > Ciudad: </label>
-                    <Select array={department.cities} name="city" id="city-select" className="w-[210px]" onChange={handleDepartmentSelect}></Select>
+                    <MySelect array={department.cities} name="city" id="city-select" className="w-[210px]" onChange={handleDepartmentSelect}></MySelect>
                 </div>
 
                 <div className="selector-row flex gap-2">
                     <label > Causas: </label>
-                    <Select array={causas_arr} name="cause" id="cause-select" className="w-[210px]" onChange={handleDepartmentSelect}></Select>
+                    <MySelect array={causas_arr} name="cause" id="cause-select" className="w-[210px]" onChange={handleDepartmentSelect}></MySelect>
                 </div>
 
             </div>
             <hr className="w-[80%] text-center m-auto text-slate-200" />
-            <div className="cards-container flex flex-wrap items-center">
+            <div className="cards-container flex flex-wrap items-center justify-center px-4">
                 {
                     isFetching ?
                         <h1 className="text-center">Loading data ...</h1>
 
                         :
                         allFoundations
-                        .filter((foundation) =>   department.name? department.name === foundation.department: true )
-                        .map((foundation) => 
-                            <div key={foundation.name} className="foundation-card relative md:m-auto flex border-slate-500 m-5 rounded-2xl shadow-xl gap-3 p-3 md:max-w-[40%] md:min-h-[200px] items-center">
-                                    <img className="foundation-logo self-start mt-2 min-w-20 h-20 shadow-2xl rounded-sm text-xs" src={foundation.logo} alt={`Logo ${foundation.name}`} />
-                                    <div className="socials absolute right-[20px] top-[10px] flex gap-1 md:gap-3">
-                                        <a href={foundation.linkedIn} target="_blank" rel="noopener noreferrer">
-                                            <img src="/LinkedIn-logo.png" alt="LinkedIn logo" className="w-6 h-6" />
-                                        </a>
-                                        <a href={foundation.instagram} target="_blank" rel="noopener noreferrer">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram logo" className="w-6 h-6" />
-                                        </a>
+                            .filter((foundation) => department.name ? department.name === foundation.department : true)
+                            .map((foundation) =>
+                                <div key={foundation.name} className="foundation-card relative  border-slate-500 my-2 rounded-2xl shadow-xl gap-3 p-3 w-[95%] md:max-w-[40%] md:m-auto flex md:min-h-[200px] items-center">
+                                    <div className="self-start flex flex-col items-center gap-4">
+                                        <img className="foundation-logo self-start mt-2 min-w-20 h-20 shadow-2xl rounded-sm text-xs" src={foundation.logo} alt={`Logo ${foundation.name}`} />
+                                        <div className="socials left-[20px] bottom-[10px] flex gap-2 md:gap-3">
+                                            <a href={foundation.linkedIn} target="_blank" rel="noopener noreferrer">
+                                                <img src="/LinkedIn-logo.png" alt="LinkedIn logo" className="w-6 h-6" />
+                                            </a>
+                                            <a href={foundation.instagram} target="_blank" rel="noopener noreferrer">
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram logo" className="w-6 h-6" />
+                                            </a>
+                                        </div>
+
                                     </div>
                                     <div className="card-text-side text-sm">
                                         <h1 className=" mb-1 text-lg font-bold text-amber-950">{foundation.name}</h1>
@@ -123,7 +128,7 @@ function Fundaciones() {
                                         {/* <div className="causas">{foundation.causes}</div> */}
                                     </div>
                                 </div>
-                        )
+                            )
                 }
             </div>
         </>
