@@ -17,7 +17,7 @@ function App() {
   return (
     <>
       <MyNavbar></MyNavbar>
-      <div className="h-screen overflow-y-scroll border-4 border-amber-800 mt-[66px]">
+      <div className="h-screen overflow-y-scroll border-4 border-amber-800">
 
         <Routes>
           <Route path="/" element={<HomePage />} />

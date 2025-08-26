@@ -1,8 +1,10 @@
+// import cows from 'cows';
+
 function NotFoundPage() {
     return (
-        <div>
-            <h1>Lo siento, no pudimos encontrar tu pagina, pero aqui tienes una vaca divertida mientras tanto</h1>
-        </div>
+        <>
+            <h1>Lo siento, 404</h1>
+        </>
     )
 }
 export default NotFoundPage
