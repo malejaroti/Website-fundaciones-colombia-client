@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-// import { departamentosColombia } from "../data/departamentos"
 import { causas_arr } from "../data/causes_arr";
 import { departamentos_ciudades_Colombia, type Departamento } from "../data/departments-cities";
 import axios from "axios";
 import Chip from "../components/Chip";
+import Select from "../components/Select";
 
 type Foundation = {
     logo: string;
@@ -22,6 +22,7 @@ function Fundaciones() {
         "cities": []
     });
     const [allFoundations, setAllFoundations] = useState<Foundation[]>([]);
+    const [isFetching, setIsFetching] = useState(false);
 
     useEffect(() => {
         getData();
@@ -31,18 +32,18 @@ function Fundaciones() {
 
     const getData = async () => {
         try {
+            setIsFetching(true)
             const responseApi = await axios.get(`http://localhost:5005/foundations/`);
             // console.log(`Response API:`, responseApi.data);
             setAllFoundations(responseApi.data)
+            setIsFetching(false)
 
         } catch (error) {
             console.log(error)
         }
 
     }
-
-
-    console.log(`cities in deparment: `, department.cities)
+    // console.log(`cities in deparment: `, department.cities)
 
     const handleDepartmentSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
@@ -50,14 +51,14 @@ function Fundaciones() {
 
         if (depto) {
             setDepartment(depto);
+            console.log("depto :", depto)
         } else {
             setDepartment({ name: "", cities: [] });
         }
     }
-
-
+    console.log("departement state", department.name)
     return (
-        <div className="h-screen overflow-y-scroll border-6 border-amber-800 mt-[66px]">
+        <>
 
             <div className="h-[50px] flex items-center justify-center">
                 <input type="text" placeholder="Search foundation by name"
@@ -65,86 +66,67 @@ function Fundaciones() {
 
             </div>
 
-            <div className="filters flex flex-col justify-around md:flex-row items-center gap-2 p-2 ">
-
-                <div className="selector-row flex gap-2 justify-between ">
-                    <label > Departamento: </label>
-                    <select name="department" id="department-select" className="w-[210px]" onChange={handleDepartmentSelect}>
-                        <option value=""></option>
-                        {departamentos_ciudades_Colombia.map((eachDepartment) => (
-                            <option key={eachDepartment.name}> {eachDepartment.name}</option>
-                        ))}
-                    </select>
+            <div className="filters flex flex-col justify-around md:flex-row items-center gap-2 p-2 m-2 mb-3 ">
+                <div className="selector-row flex gap-2">
+                    <label > Departmento: </label>
+                    <Select array={departamentos_ciudades_Colombia} name="department" id="department-select2" className="w-[210px]" onChange={handleDepartmentSelect}></Select>
                 </div>
+
                 <div className="selector-row flex gap-2">
                     <label > Ciudad: </label>
-                    <select name="department" id="department-select" className="w-[210px]" >
-                        <option value=""></option>
-                        {department.cities.map((eachCity) => (
-                            <option key={eachCity} value={eachCity} > {eachCity}</option>
-                        ))}
-                    </select>
+                    <Select array={department.cities} name="city" id="city-select" className="w-[210px]" onChange={handleDepartmentSelect}></Select>
                 </div>
-                <div className="selector-row flex gap-2 ">
-                    <label > Causa: </label>
-                    <select name="causa" id="causa-select" className="w-[210px] text-xs">
-                        <option value=""></option>
-                        {causas_arr.map((eachCause) => (
-                            <option key={eachCause.name} value={eachCause.name} > {eachCause.name}</option>
-                        ))}
-                    </select>
+
+                <div className="selector-row flex gap-2">
+                    <label > Causas: </label>
+                    <Select array={causas_arr} name="cause" id="cause-select" className="w-[210px]" onChange={handleDepartmentSelect}></Select>
                 </div>
-                {/* <div className="selector-row flex gap-2 ">
-                    <label > Beneficiarios: </label>
-                    <select name="beneficiarios" id="beneficiarios-select" className="w-[210px]">
-                        <option value=""></option>
-                        {causas_arr.map((eachBenefitiaryType) => (
-                            <option key={eachBenefitiaryType} value={eachBenefitiaryType} > {eachBenefitiaryType}</option>
-                        ))}
-                    </select>
-                </div> */}
 
             </div>
+            <hr className="w-[80%] text-center m-auto text-slate-200" />
+            <div className="cards-container flex flex-wrap items-center">
+                {
+                    isFetching ?
+                        <h1 className="text-center">Loading data ...</h1>
 
-            {
-                allFoundations.map((foundation) => (
-                    <div className="foundation-card  relative flex border-slate-500 rounded-2xl shadow-xl m-5 items-center gap-3 p-3">
-                        <img className="logo self-start mt-2 min-w-20 h-20 shadow-2xl rounded-sm" src={foundation.logo} alt={`Logo ${foundation.name}`} />
-                        <div className="socials absolute right-[20px] top-[10px] flex gap-1 md:gap-3">
-                            <a href={foundation.linkedIn} target="_blank" rel="noopener noreferrer">
-                                <img src="/LinkedIn-logo.png" alt="LinkedIn logo" className="w-6 h-6" />
-                            </a>
-                            <a href={foundation.instagram} target="_blank" rel="noopener noreferrer">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram logo" className="w-6 h-6" />
-                            </a>
-                        </div>
-                        <div className="card-text-side text-sm">
-                            <h1 className=" mb-1 text-lg font-bold text-amber-950">{foundation.name}</h1>
-                            <p className="mb-1 ">📍{foundation.city}, {foundation.department}</p>
-                            <p className="mb-1 text-xs">{foundation.description}</p>
-                            <div className="chips-container flex flex-wrap gap-1">
-                                {foundation.causes.map((eachCause) => {
-                                    // console.log(`type of cause from DB:`, typeof (eachCause))
-                                    // console.log(`type of cause from array:`, typeof (causas_arr[3].name))
-                                    const foundCause = causas_arr.find((cause) => cause.name === eachCause)
-                                    
-                                    console.log(`Found Cause`, foundCause)
-                                    if (!foundCause) return null;
-                                    return (
-                                        <Chip
-                                            key={foundCause.name}
-                                            label={foundCause.name}
-                                            color={foundCause.color}
-                                        />
-                                    )
-                                })}
-                            </div>
-                            {/* <div className="causas">{foundation.causes}</div> */}
-                        </div>
-                    </div>
-                ))
-            }
-        </div >
+                        :
+                        allFoundations
+                        .filter((foundation) =>   department.name? department.name === foundation.department: true )
+                        .map((foundation) => 
+                            <div key={foundation.name} className="foundation-card relative md:m-auto flex border-slate-500 m-5 rounded-2xl shadow-xl gap-3 p-3 md:max-w-[40%] md:min-h-[200px] items-center">
+                                    <img className="foundation-logo self-start mt-2 min-w-20 h-20 shadow-2xl rounded-sm text-xs" src={foundation.logo} alt={`Logo ${foundation.name}`} />
+                                    <div className="socials absolute right-[20px] top-[10px] flex gap-1 md:gap-3">
+                                        <a href={foundation.linkedIn} target="_blank" rel="noopener noreferrer">
+                                            <img src="/LinkedIn-logo.png" alt="LinkedIn logo" className="w-6 h-6" />
+                                        </a>
+                                        <a href={foundation.instagram} target="_blank" rel="noopener noreferrer">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram logo" className="w-6 h-6" />
+                                        </a>
+                                    </div>
+                                    <div className="card-text-side text-sm">
+                                        <h1 className=" mb-1 text-lg font-bold text-amber-950">{foundation.name}</h1>
+                                        <p className="mb-1 ">📍{foundation.city}, {foundation.department}</p>
+                                        <p className="description p-1 mb-1 text-xs">{foundation.description}</p>
+                                        <div className="chips-container flex flex-wrap gap-1">
+                                            {foundation.causes.map((eachCause) => {
+                                                const foundCause = causas_arr.find((cause) => cause.name === eachCause)
+                                                if (!foundCause) return null;
+                                                return (
+                                                    <Chip
+                                                        key={foundCause.name}
+                                                        label={foundCause.name}
+                                                        color={foundCause.color}
+                                                    />
+                                                )
+                                            })}
+                                        </div>
+                                        {/* <div className="causas">{foundation.causes}</div> */}
+                                    </div>
+                                </div>
+                        )
+                }
+            </div>
+        </>
     )
 }
 export default Fundaciones                      
