@@ -4,6 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 // Format a date from intervention fields into "Sábado 16 abril, 2025" (Spanish).
 // Accepts both underscore and hyphen field names and tolerates missing month/day.
@@ -79,9 +80,11 @@ function InterventionCard({ intervention, cardType , getInterventionsData}) {
                         className={`size-12 rounded-full object-cover ring-2 ring-purple-200 ${cardType === "feed" ? "block" : "hidden"}`}
                     />
                     <div className="leading-tight">
-                        <p className={`mb-0 font-semibold text-slate-800 ${cardType === "feed" ? "block" : "hidden"}`}>
-                            {intervention.foundation?.name}
-                        </p>
+                        <Link to={`/fundaciones/${intervention.foundationId}`}>
+                            <p className={`mb-0 font-semibold text-slate-800 ${cardType === "feed" ? "block" : "hidden"}`}>
+                                {intervention.foundation?.name}
+                            </p>
+                        </Link>
                         <p className="mb-0 text-xs text-slate-500">
                             {formatInterventionDate(intervention, "es-CO")}
                         </p>
