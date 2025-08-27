@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import type { Foundation } from "./Fundaciones.tsx";
 import type { Intervention } from "../types/Intervention";
 import { causas_arr } from "../data/causes_arr";
@@ -87,7 +87,7 @@ function FoundationDetails() {
                             </a>
                         </div>
                     </div>
-                    <Button className="edit-foundation absolute right-3" variant="secondary" size="sm" >Editar</Button>
+                    <Button as={Link} to={`/fundaciones/editar-fundacion/${foundation.id}`}className="edit-foundation absolute right-3" variant="secondary" size="sm" >Editar</Button>
 
                     <div className="interventions border-slate-500 my-2 rounded-2xl shadow-xl gap-3 p-3 w-[95%] md:max-w-[40%] md:m-auto flex flex-col md:min-h-[200px] items-center">
                         <p className=" font-medium text-xl text-gray-500">Intervenciones recientes</p>
