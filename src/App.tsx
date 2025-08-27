@@ -1,16 +1,13 @@
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import MyNavbar from './components/Navbar'
 import { Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import Fundaciones from './pages/Fundaciones'
-import NotFoundPage from './pages/NotFoundPage'
+import FoundationDetails from './pages/FoundationDetails'
 import AddFoundation from './pages/AddFoundation'
 import AboutPage from './pages/AboutPage'
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-import { departamentos_ciudades_Colombia, type Departamento } from "./data/departments-cities";
-
-
+import NotFoundPage from './pages/NotFoundPage'
 
 function App() {
 
@@ -23,14 +20,13 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/fundaciones" element={<Fundaciones />} />
           <Route path="/fundaciones/nueva-fundacion" element={<AddFoundation />} />
+          <Route path="/fundaciones/:id" element={<FoundationDetails />} />
           <Route path="/about" element={<AboutPage />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
 
       </div>
-
-
     </>
   )
 }

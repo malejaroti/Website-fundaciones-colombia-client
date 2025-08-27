@@ -74,7 +74,7 @@ function AddFoundation() {
       // id: data.id,
       name: formData.name,
       description: formData.description,
-      logo: formData.logo? formData.logo : "",
+      logo: formData.logo ? formData.logo : "",
       department: formData.department,
       city: formData.city,
       website: formData.website,
@@ -84,7 +84,7 @@ function AddFoundation() {
       beneficiaries: formData.beneficiaries,
     };
 
-    await axios.post("http://localhost:5005/foundations/", newFoundation)
+    await axios.post("${import.meta.env.VITE_SERVER_URL}/foundations/", newFoundation)
 
     // onSubmit(task);
     // navigate("/");
