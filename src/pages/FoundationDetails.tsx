@@ -6,6 +6,7 @@ import type { Intervention } from "../types/Intervention";
 import { causas_arr } from "../data/causes_arr";
 import Chip from "../components/Chip.tsx";
 import Button from 'react-bootstrap/Button';
+import InterventionCard from "../components/InterventionCard.tsx";
 
 
 function FoundationDetails() {
@@ -63,7 +64,7 @@ function FoundationDetails() {
             ) : foundation !== null ? (
                 <>
                     <Link to={`/fundaciones/`} >
-                    <p className="btn-back underline ml-3 mb-0 "  >Todas las fundaciones</p>
+                        <p className="btn-back underline ml-3 mb-0 "  >Todas las fundaciones</p>
                     </Link>
 
                     <div className="page border-1 border-slate-500 my-2 rounded-2xl shadow-xl py-3 items-center flex flex-col">
@@ -92,20 +93,13 @@ function FoundationDetails() {
                                 </a>
                             </div>
                         </div>
-                        <Button as={Link} to={`/fundaciones/editar-fundacion/${foundation.id}`}className="edit-foundation absolute right-3" variant="secondary" size="sm" >Editar</Button>
+                        <Button as={Link} to={`/fundaciones/editar-fundacion/${foundation.id}`} className="edit-foundation absolute right-3" variant="secondary" size="sm" >Editar</Button>
 
                         <div className="interventions border-slate-500 my-2 rounded-2xl shadow-xl gap-3 p-3 w-[95%] md:max-w-[40%] md:m-auto flex flex-col md:min-h-[200px] items-center">
                             <p className=" font-medium text-xl text-gray-500">Intervenciones recientes</p>
                             {interventions.map((eachIntervention) => (
-                                <div key={eachIntervention.id} className="intervention-card">
-                                    <p
-                                        className="intervention-text border border-slate-300 rounded-sm p-2 text-justify">
-                                        {eachIntervention.description}
-                                    </p>
-                                    <button>Edit</button>
-                                    <button>Delete</button>
-
-                                </div>))
+                                <InterventionCard key={eachIntervention.id} intervention={eachIntervention} cardType={"foundationProfile"} />
+                            ))
                             }
                         </div>
 
