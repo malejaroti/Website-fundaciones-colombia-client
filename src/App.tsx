@@ -8,6 +8,7 @@ import FoundationDetails from './pages/FoundationDetails'
 import AddFoundation from './pages/AddFoundation'
 import AboutPage from './pages/AboutPage'
 import NotFoundPage from './pages/NotFoundPage'
+import EditFoundation from './pages/EditFoundation';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/fundaciones" element={<Fundaciones />} />
           <Route path="/fundaciones/nueva-fundacion" element={<AddFoundation />} />
+          <Route path="/fundaciones/editar-fundacion/:id" element={<EditFoundation />} />
           <Route path="/fundaciones/:id" element={<FoundationDetails />} />
           <Route path="/about" element={<AboutPage />} />
 
