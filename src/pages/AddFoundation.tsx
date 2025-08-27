@@ -9,9 +9,16 @@ import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
 import axios from "axios";
 import type { Foundation } from "./Fundaciones.tsx";
+import { useNavigate } from "react-router-dom";
 
 
 function AddFoundation() {
+  const navigate = useNavigate()
+  const [cities, setCities] = useState<string[]>([]);
+  const [department, setDepartment] = useState<Departamento>({
+    "name": "",
+    "cities": []
+  });
   const data = {
     name: "",
     description: "",
@@ -35,18 +42,13 @@ function AddFoundation() {
     causes: data.causes,
     beneficiaries: data.beneficiaries,
   });
-  const [cities, setCities] = useState<string[]>([]);
-  const [department, setDepartment] = useState<Departamento>({
-    "name": "",
-    "cities": []
-  });
-
+  
+  const animatedComponents = makeAnimated();
   const options = causas_arr.map(cause => ({
     value: cause.name,
     label: cause.name
   }));
 
-  const animatedComponents = makeAnimated();
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = event.currentTarget;
@@ -84,10 +86,9 @@ function AddFoundation() {
       beneficiaries: formData.beneficiaries,
     };
 
-    await axios.post("${import.meta.env.VITE_SERVER_URL}/foundations/", newFoundation)
+    await axios.post(`${import.meta.env.VITE_SERVER_URL}/foundations/`, newFoundation)
 
-    // onSubmit(task);
-    // navigate("/");
+    navigate(-1);
   };
   return (
     <div>
