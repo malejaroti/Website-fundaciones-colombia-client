@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { Link } from "react-router-dom"
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import logo from '../assets/fundaciones-colombia-logo2.png';
 
 function MyNavbar() {
     return (
@@ -13,7 +13,7 @@ function MyNavbar() {
                     <Navbar.Brand to={"/"} as={Link} className="flex items-center gap-2"
                     >
                         <img
-                            src="fundaciones-colombia-logo2.png"
+                            src={logo}
                             width="40"
                             height="40"
                             className="inline-block align-top"
