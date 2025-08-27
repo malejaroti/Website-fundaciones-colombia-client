@@ -98,7 +98,7 @@ function FoundationDetails() {
                         <div className="interventions border-slate-500 my-2 rounded-2xl shadow-xl gap-3 p-3 w-[95%] md:max-w-[40%] md:m-auto flex flex-col md:min-h-[200px] items-center">
                             <p className=" font-medium text-xl text-gray-500">Intervenciones recientes</p>
                             {interventions.map((eachIntervention) => (
-                                <InterventionCard key={eachIntervention.id} intervention={eachIntervention} cardType={"foundationProfile"} />
+                                <InterventionCard key={eachIntervention.id} intervention={eachIntervention} cardType={"foundationProfile"} getInterventionsData={getInterventionsData}/>
                             ))
                             }
                         </div>

@@ -1,5 +1,9 @@
+import { useState, type ReactEventHandler } from 'react';
 import { RiEditFill } from "react-icons/ri";
 import { FaTrash } from "react-icons/fa";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import axios from 'axios';
 
 // Format a date from intervention fields into "Sábado 16 abril, 2025" (Spanish).
 // Accepts both underscore and hyphen field names and tolerates missing month/day.
@@ -45,7 +49,21 @@ function formatInterventionDate(i: any, locale: string = "es-CO"): string {
     return String(year);
 }
 
-function InterventionCard({ intervention, cardType }) {
+function InterventionCard({ intervention, cardType , getInterventionsData}) {
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleConfirmDeletion = () => {
+        getInterventionsData()
+        setShow(false);
+    }
+
+    const handleClickOnTrash = async () => {
+        console.log("interventionId:", intervention.id)
+        await axios.delete(`${import.meta.env.VITE_SERVER_URL}/interventions/${intervention.id}`);
+        setShow(true);
+    }
     return (
         <>
             <div
@@ -73,10 +91,24 @@ function InterventionCard({ intervention, cardType }) {
                 <p className="intervention-text bg-slate-50 border border-slate-200 rounded-lg p-3 text-justify text-slate-700">
                     {intervention.description}
                 </p>
-                <div className="flex gap-1 absolute right-3 top-2.5">
+                <div className={`flex gap-1 absolute right-3 top-2.5 ${cardType === "foundationProfile" ? "block" : "hidden"}`}>
                     <RiEditFill className="text-slate-300 size-4" />
-                    <FaTrash className="text-slate-300 size-4" />
+                    <FaTrash className="text-slate-300 size-4" onClick={handleClickOnTrash} />
                 </div>
+                <Modal show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Eliminar intervención</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Estás seguro que quieres eliminar esta intervención? </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Cancelar
+                        </Button>
+                        <Button variant="primary" onClick={handleConfirmDeletion}>
+                            Confirmar
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
 
         </>
