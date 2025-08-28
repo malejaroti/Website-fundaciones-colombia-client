@@ -86,13 +86,11 @@ function AddFoundation() {
       <h1 className="text-center my-2">Añadir fundación</h1>
       <form onSubmit={handleSubmit} className="form m-auto p-2 text-center border w-[90%] flex flex-col">
 
-        <label className="flex items-center">
-          <p className="w-1/6 text-end mr-5 mb-0">Nombre</p>
+        <label className="text-left">Nombre
           <input required className="w-full  mt-0 font-medium border border-slate-300 p-2 rounded-sm mb-3" name="name" type="text" value={formData.name} onChange={handleOnChange} />
         </label>
 
-        <label className="items-center" >
-          <p className="w-1/6 text-end mr-5 mb-0">Descripción</p>
+        <label className="text-left" >Descripción
           <textarea required className="w-full font-medium border border-slate-300 p-2 rounded-sm mb-3" name="description" value={formData.description} onChange={handleOnChange} placeholder="Describe la misión de la fundación brevemente"></textarea>
         </label>
 
