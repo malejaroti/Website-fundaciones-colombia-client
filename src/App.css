@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap");
 @import "tailwindcss";
 #root {
 }
@@ -18,4 +19,8 @@ select {
   justify-content: space-between;
   /* border: 2px red solid; */
   width: 90%;
+}
+
+.font-montserrat{
+  font-family: "Montserrat";
 }

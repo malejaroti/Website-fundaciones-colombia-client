@@ -28,7 +28,7 @@ function HomePage() {
     return (
         <>
             <header className="h-[25%] p-8 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 shadow-lg mb-6 flex items-center">
-                <h1 className="w-[50%] text-left text-3xl md:text-5xl font-extrabold font-montserrat text-white drop-shadow-lg tracking-tight">
+                <h1 className="w-[60%] text-left text-3xl md:text-5xl font-extrabold font-montserrat text-white drop-shadow-lg tracking-tight">
                     Sigue a los verdaderos influencers de Colombia.
                 </h1>
             </header>
