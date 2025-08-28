@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import type { Intervention } from "../types/Intervention";
 import axios from "axios";
 import InterventionCard from "../components/InterventionCard";
+import heroImage from "../assets/hero-image.png"
+import { Link } from "react-router-dom";
 
 function HomePage() {
 
@@ -27,11 +29,21 @@ function HomePage() {
 
     return (
         <>
-            <header className="h-[25%] p-8 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 shadow-lg mb-6 flex items-center">
-                <h1 className="w-[60%] text-left text-3xl md:text-5xl font-extrabold font-montserrat text-white drop-shadow-lg tracking-tight">
-                    Sigue a los verdaderos influencers de Colombia.
-                </h1>
+            <header className="p-8 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 shadow-lg mb-6 flex items-center md:max-h-[60%] md:justify-center">
+                <div className="w-[60%] flex flex-col gap-2 p-1 lg:h-full lg:ml-50">
+                    <p className="font-montserrat w-full text-left text-lg text-white drop-shadow-lg
+                                lg:text-5xl font-medium">
+                        Descubre, conecta y apoya a las fundaciones que transforman nuestro país...
+                    </p>
+                    <Link to={"/fundaciones"}>
+                        <button className=" px-3 py-2 border rounded-lg bg-gradient-to-r from-blue-400 to-purple-400 text-white font-semibold shadow-md hover:from-blue-500 hover:to-purple-500 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            Explora las fundaciones
+                        </button>
+                    </Link>
+                </div>
+                <img src={heroImage} alt="" className="lg:max-h-[300px]" />
             </header>
+
             <div>
                 <div className="interventions border-slate-500 my-2 rounded-2xl shadow-xl gap-3 p-3 w-[95%] md:max-w-[40%] md:m-auto flex flex-col md:min-h-[200px] items-center">
                     <p className=" font-medium text-xl text-gray-500">Intervenciones recientes</p>
