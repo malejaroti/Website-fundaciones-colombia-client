@@ -1,34 +1,10 @@
-import { useEffect, useState } from "react";
-import type { Intervention } from "../types/Intervention";
-import axios from "axios";
-import InterventionCard from "../components/InterventionCard";
 import heroImage from "../assets/hero-image.png"
 import { Link } from "react-router-dom";
 import CausesSection from "../components/CausesSectionHome";
-
+import Button from "react-bootstrap/esm/Button";
+import InterventionsCarousel from "../components/InterventionsCarousel";
 
 function HomePage() {
-
-    const [interventions, setInterventions] = useState<Intervention[]>([]);
-    const [isFetching, setIsFetching] = useState(false);
-
-    useEffect(() => {
-        getInterventionsData();
-    }, []);
-
-    const getInterventionsData = async () => {
-        try {
-            setIsFetching(true);
-            // const responseApi = await axios.get(`${import.meta.env.VITE_SERVER_URL}/interventions/`);
-            const responseApi = await axios.get(`${import.meta.env.VITE_SERVER_URL}/interventions/?_expand=foundation`);
-            console.log(`Response API:`, responseApi.data);
-            setInterventions(responseApi.data);
-            setIsFetching(false);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     return (
         <>
             <header className="p-8 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 shadow-lg mb-6 flex items-center md:max-h-[60%] md:justify-center">
@@ -46,15 +22,18 @@ function HomePage() {
                 <img src={heroImage} alt="" className="lg:max-h-[300px]" />
             </header>
 
-            <div className="lg:flex border-2">
+            <div className="py-3 lg:flex lg:justify-center lg:gap-10 border">
                 <section>
-                    <div className="interventions border-slate-500 my-2 rounded-2xl shadow-xl gap-3 p-3 w-[95%] lg:max-w-[40%] lg:m-auto flex flex-col lg:min-h-[200px] items-center">
-                        <p className=" font-medium text-xl text-gray-500">Intervenciones recientes</p>
-                        {isFetching && <p className="text-sm text-gray-400">Cargando…</p>}
-                        {interventions.map((eachIntervention) => (
-                            <InterventionCard key={eachIntervention.id} intervention={eachIntervention} cardType={"feed"} />
-                        ))
-                        }
+
+                    <div className="interventions border-slate-500 my-2  shadow-xl gap-3 py-3 px-10 w-[95%]  lg:m-auto flex flex-col lg:min-h-[200px] lg:max-w-[800px] items-center">
+                        <h2 className="text-2xl font-bold text-gray-800 text-center font-montserrat my-0">
+                            Últimas Intervenciones
+                        </h2>
+                        <p className="mt-0 text-sm text-center font-montserrat">Descubre las acciones más recientes de las fundaciones en todo el país.</p>
+                        <InterventionsCarousel />
+                        <Link to={"/intervenciones"} className="mb-3">
+                            <Button variant="primary" size="sm"> Ver todas la intervenciones</Button>
+                        </Link>
                     </div>
                 </section>
                 <CausesSection />

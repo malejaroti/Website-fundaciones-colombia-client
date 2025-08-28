@@ -83,8 +83,12 @@ function AddFoundation() {
 
   return (
     <div>
-      <h1 className="text-center my-2">Añadir fundación</h1>
-      <form onSubmit={handleSubmit} className="form m-auto p-2 text-center border w-[90%] flex flex-col">
+      <header className="font-montserrat p-6 md:p-8 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white shadow-lg mb-6">
+        <div className="max-w-6xl mx-auto">
+          <h1 className=" text-2xl md:text-3xl font-semibold drop-shadow">Añadir fundación</h1>
+        </div>
+      </header>
+      <form onSubmit={handleSubmit} className="form m-auto p-3 text-center border w-[90%] flex flex-col rounded-lg lg:w-[60%]">
 
         <label className="text-left">Nombre
           <input required className="w-full  mt-0 font-medium border border-slate-300 p-2 rounded-sm mb-3" name="name" type="text" value={formData.name} onChange={handleOnChange} />
@@ -128,7 +132,7 @@ function AddFoundation() {
           <input className="w-full mt-0 font-medium border border-slate-300 p-2 rounded-sm mb-3" name="instagram" type="text" value={formData.instagram} onChange={handleOnChange} />
         </label>
 
-        <Button className="m-5 p-3 rounded-sm text-cyan-700 md:cursor-pointer shadow-md shadow-blue-300 hover:relative hover:top-0.5 hover:left-0.5" type="submit">
+        <Button className="m-5 p-3 rounded-sm text-cyan-700 md:cursor-pointer shadow-md shadow-blue-300 hover:relative hover:top-0.5 hover:left-0.5 lg:w-[20%] lg:self-center" type="submit">
           Añadir
         </Button>
       </form>

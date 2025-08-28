@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 
 function CausesSection() {
     return (
-        <section className="bg-white py-10 px-6 font-montserrat">
+        <section className="bg-white  border-slate-500   shadow-xl py-10 px-6 font-montserrat">
             <h2 className=" text-2xl font-bold text-gray-800 text-center mb-6">
                 Explora por Causa
             </h2>
 
             {/* Grid responsive */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mx-auto mb-0">
                 {causas_arr.filter(c => c.showInHome).map((cause) => (
                     <Link
                         key={cause.name}

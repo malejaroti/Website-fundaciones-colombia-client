@@ -109,7 +109,7 @@ function InterventionCard({ intervention, cardType, getInterventionsData }: Inte
         <>
             <div
                 key={intervention.id}
-                className="intervention-card min-w-[100%] relative flex flex-col gap-3 px-4 pt-3 pb-2 bg-white/90 border border-slate-200 rounded-xl shadow-sm hover:shadow-md"
+                className={`intervention-card relative flex flex-col gap-3 px-4 pt-3 pb-2 bg-white/90 border border-slate-200 rounded-xl shadow-sm hover:shadow-md ${cardType === "feed"? ` mb-3 h-[250px]  overflow-y-hidden lg:max-w-[550px]`: "mb-4"}` }
             >
                 <div className="absolute left-0 top-0 h-full w-1 rounded-l-xl bg-gradient-to-b from-blue-500 to-pink-500" aria-hidden />
 
