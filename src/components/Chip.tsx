@@ -34,7 +34,7 @@ function Chip({ label, color }: ChipProps) {
     const chipColor = chipColors[color]
     return (
 
-        <div className={`chip w-fit text-xs px-1 pb-0.5 text-center border ${chipColor} rounded-sm`}>
+        <div className={`chip w-fit text-xs px-1 pb-0.5 text-center border ${chipColor} rounded-sm lg:text-lg`}>
             {label}
         </div>
     )
