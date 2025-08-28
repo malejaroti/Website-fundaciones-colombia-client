@@ -9,7 +9,6 @@ import makeAnimated from 'react-select/animated';
 import axios from "axios";
 import type { Foundation } from "./Fundaciones.tsx";
 import { useNavigate, useParams } from "react-router-dom";
-import type { Intervention } from "../types/Intervention";
 
 
 function EditFoundation() {
