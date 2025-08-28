@@ -5,6 +5,8 @@ import axios from "axios";
 import Chip from "../components/Chip";
 import MySelect from "../components/Select";
 import { useNavigate } from "react-router-dom";
+import iconGoToWebsite from '../assets/icon-go-to-website.png';
+
 
 export type Foundation = {
     id?: string, 
@@ -21,19 +23,21 @@ export type Foundation = {
 };
 
 function Fundaciones() {
+    const navigate = useNavigate()
     const [allFoundations, setAllFoundations] = useState<Foundation[]>([]);
     const [isFetching, setIsFetching] = useState(false);
+    const [searchedValue, setSearchedValue] = useState("");
+    const [selectedCause, setSelectedCause] = useState("");
     const [department, setDepartment] = useState<Departamento>({
         "name": "",
         "cities": []
     });
 
-    const navigate = useNavigate()
+    let allFoundationNames : Array<string> = allFoundations? allFoundations.map(foundation => foundation.name) : []
+    console.log("all foundation names", allFoundationNames)
 
     useEffect(() => {
         getData();
-
-
     }, [])
 
     const getData = async () => {
@@ -43,6 +47,7 @@ function Fundaciones() {
             // console.log(`Response API:`, responseApi.data);
             setAllFoundations(responseApi.data)
             setIsFetching(false)
+
 
         } catch (error) {
             console.log(error)
@@ -63,42 +68,48 @@ function Fundaciones() {
         }
     }
 
-    const handleOnClickOnFoundationName = (e: React.ChangeEvent<HTMLHeadingElement>) => {
-        const foundation = allFoundations.find((f) => f.name === e.target.innerText);
-        console.log(`foundation clicked: ${foundation.name}`)
+    const handleOnClickOnFoundationName = (e: React.MouseEvent<HTMLHeadingElement>) => {
+        const foundation = allFoundations.find((f) => f.name === e.currentTarget.textContent);      
         if(foundation){
             navigate(`/fundaciones/${foundation.id}`)
         }
     }
-
+    console.log("selected cause", selectedCause)
     return (
         <>
             {/* Search bar */}
             <div className="h-[50px] flex items-center justify-center">
                 <input type="text" placeholder="Search foundation by name"
-                    className=" w-9/10 text-center border-slate-400 border rounded-sm" />
+                    className=" w-9/10 text-center border-slate-400 border rounded-sm" 
+                    value={searchedValue}
+                    onChange={(e) => setSearchedValue(e.target.value)}/>
 
             </div>
 
             {/* Search filters */}
-            <div className="filters flex flex-col justify-around md:flex-row items-center gap-2 p-2 m-2 mb-3 ">
+            <div className="filters flex flex-col justify-around md:flex-row items-center gap-2 p-2 ">
                 <div className="selector-row flex gap-2">
                     <label > Departmento: </label>
-                    <MySelect array={departamentos_ciudades_Colombia} name="department" id="department-select2" className="w-[210px]" onChange={handleDepartmentSelect}></MySelect>
+                    <MySelect array={departamentos_ciudades_Colombia} name="department" id="department-select2" onChange={handleDepartmentSelect}></MySelect>
                 </div>
 
                 <div className="selector-row flex gap-2">
                     <label > Ciudad: </label>
-                    <MySelect array={department.cities} name="city" id="city-select" className="w-[210px]" onChange={handleDepartmentSelect}></MySelect>
+                    <MySelect
+                        array={["Selecciona un departamento", ...department.cities]}
+                        name="city"
+                        id="city-select"
+                        onChange={handleDepartmentSelect}
+                    ></MySelect>
                 </div>
 
                 <div className="selector-row flex gap-2">
                     <label > Causas: </label>
-                    <MySelect array={causas_arr} name="cause" id="cause-select" className="w-[210px]" onChange={handleDepartmentSelect}></MySelect>
+                    <MySelect array={causas_arr} otherAtributes={""} name="cause" id="cause-select"  onChange={(e) => setSelectedCause(e.target.value)}></MySelect>
                 </div>
 
             </div>
-            <hr className="w-[80%] text-center m-auto text-slate-200" />
+            <hr className="w-[90%] text-center m-auto text-slate-50 my-2" />
 
             {/* All foundations searched */}
             <div className="cards-container flex flex-wrap items-center justify-center px-4">
@@ -108,23 +119,37 @@ function Fundaciones() {
 
                         :
                         allFoundations
+                            .filter((foundation) => searchedValue ?(foundation.name.includes(searchedValue))  : true)
                             .filter((foundation) => department.name ? department.name === foundation.department : true)
+                            .filter((foundation) => selectedCause ?(foundation.causes.includes(selectedCause))  : true)
                             .map((foundation) =>
-                                <div key={foundation.name} className="foundation-card relative  border-slate-500 my-2 rounded-2xl shadow-xl gap-3 p-3 w-[95%] md:max-w-[40%] md:m-auto flex md:min-h-[200px] items-center">
+                                <div key={foundation.name} className="foundation-card relative border border-slate-500 my-2 rounded-2xl shadow-xl gap-3 p-3 w-[95%] md:max-w-[40%] md:m-auto flex md:min-h-[200px] items-center">
                                     <div className="self-start flex flex-col items-center gap-4">
-                                        <img className="foundation-logo self-start mt-2 min-w-20 h-20 shadow-2xl rounded-sm text-xs" src={foundation.logo === ""? null: foundation.logo} alt={`Logo ${foundation.name}`} />
+                                        {foundation.logo && 
+                                            <img className="foundation-logo self-start mt-2 min-w-20 h-20 shadow-2xl rounded-sm text-xs" src={foundation.logo} alt={`Logo ${foundation.name}`} />
+                                        }
                                         <div className="socials left-[20px] bottom-[10px] flex gap-2 md:gap-3">
-                                            <a href={foundation.linkedIn} target="_blank" rel="noopener noreferrer">
-                                                <img src="/LinkedIn-logo.png" alt="LinkedIn logo" className="w-6 h-6" />
-                                            </a>
-                                            <a href={foundation.instagram} target="_blank" rel="noopener noreferrer">
-                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram logo" className="w-6 h-6" />
-                                            </a>
+                                            {foundation.website? (
+                                                <a href={foundation.website} target="_blank" rel="noopener noreferrer">
+                                                    <img src={iconGoToWebsite} alt="Icon for go to website" className="w-6 h-6" />
+                                                </a>
+                                                ): (null)}
+                                            {foundation.linkedIn? (
+                                                <a href={foundation.linkedIn} target="_blank" rel="noopener noreferrer">
+                                                    <img src="/LinkedIn-logo.png" alt="LinkedIn logo" className="w-6 h-6" />
+                                                </a>
+                                            ): (null)}
+
+                                            {foundation.instagram? (
+                                                <a href={foundation.instagram} target="_blank" rel="noopener noreferrer">
+                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram logo" className="w-6 h-6" />
+                                                </a>
+                                            ): (null)}
                                         </div>
 
                                     </div>
                                     <div className="card-text-side text-sm">
-                                        <h1 className=" mb-1 text-base font-bold text-amber-950" onClick={handleOnClickOnFoundationName} >{foundation.name}</h1>
+                                        <h2 className=" mb-1 text-base font-bold text-amber-950" onClick={handleOnClickOnFoundationName} >{foundation.name}</h2>
                                         <p className="mb-1 ">📍{foundation.city}, {foundation.department}</p>
                                         <p className="description p-1 mb-1 text-xs">{foundation.description}</p>
                                         <div className="chips-container flex flex-wrap gap-1">
