@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { departamentos_ciudades_Colombia, type Departamento } from "../data/departments-cities";
+import { departamentos_ciudades_Colombia} from "../data/departments-cities";
 import { causas_arr } from "../data/causes_arr";
 
 import MySelect from "../components/Select";
@@ -15,10 +14,6 @@ import { useNavigate } from "react-router-dom";
 function AddFoundation() {
   const navigate = useNavigate()
   const [cities, setCities] = useState<string[]>([]);
-  const [department, setDepartment] = useState<Departamento>({
-    "name": "",
-    "cities": []
-  });
   const data = {
     name: "",
     description: "",
@@ -60,10 +55,8 @@ function AddFoundation() {
     if (name === "department") {
       const depto = departamentos_ciudades_Colombia.find((d) => d.name === value);
       if (depto) {
-        setDepartment(depto);
         setCities(depto.cities);
       } else {
-        setDepartment({ name: "", cities: [] });
         setCities([]);
       }
     }
@@ -71,9 +64,7 @@ function AddFoundation() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // //prettier-ignore
     const newFoundation: Foundation = {
-      // id: data.id,
       name: formData.name,
       description: formData.description,
       logo: formData.logo ? formData.logo : "",
@@ -87,9 +78,9 @@ function AddFoundation() {
     };
 
     await axios.post(`${import.meta.env.VITE_SERVER_URL}/foundations/`, newFoundation)
-
     navigate(-1);
   };
+
   return (
     <div>
       <h1 className="text-center my-2">Añadir fundación</h1>
