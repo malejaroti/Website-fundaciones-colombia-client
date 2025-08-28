@@ -13,7 +13,6 @@ import { useNavigate, useParams } from "react-router-dom";
 
 function EditFoundation() {
   const params = useParams();
-  const [foundation, setFoundation] = useState<Foundation | null>(null);
   const [isFetching, setIsFetching] = useState(false);
   const [cities, setCities] = useState<string[]>([]);
 
@@ -46,7 +45,6 @@ function EditFoundation() {
       setIsFetching(true);
       const { data } = await axios.get<Foundation>(`${import.meta.env.VITE_SERVER_URL}/foundations/${params.id}`);
       console.log(`Response API:`, data);
-      setFoundation(data);
       setFormData(data);
       setIsFetching(false);
 
