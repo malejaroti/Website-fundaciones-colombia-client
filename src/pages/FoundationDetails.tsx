@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactEventHandler } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { Foundation } from "./Fundaciones.tsx";
 import type { Intervention } from "../types/Intervention";
@@ -22,10 +22,22 @@ function FoundationDetails() {
         causes: [],
         beneficiaries: [],
     });
+
+    const emptyIntervention: Intervention = {
+        description: "",
+        intervention_date_year: "",
+        intervention_date_month: "",
+        intervention_date_day: "",
+        foundationId: ""
+    }
     const [interventions, setInterventions] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
+    const [creatingNewIntervention, setCreatingNewIntervention] = useState(false);
+    const [formDataNewIntervention, setFormDataNewIntervention] = useState<Intervention>(emptyIntervention);
+
+
     const params = useParams();
-    console.log(`params: ${params.id}`);
+    // console.log(`params: ${params.id}`);
 
     useEffect(() => {
         getData();
@@ -35,8 +47,8 @@ function FoundationDetails() {
     const getData = async () => {
         try {
             setIsFetching(true);
-            const { data } = await axios.get<Intervention[]>(`${import.meta.env.VITE_SERVER_URL}/foundations/${params.id}`);
-            console.log(`Response API:`, data);
+            const { data } = await axios.get<Foundation>(`${import.meta.env.VITE_SERVER_URL}/foundations/${params.id}`);
+            // console.log(`Response API:`, data);
             setFoundation(data);
             setIsFetching(false);
         } catch (error) {
@@ -56,7 +68,30 @@ function FoundationDetails() {
         }
     };
 
-    console.log(`Foundation name:  ${foundation.name}`);
+    const handleOnChange = (event:React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = event.currentTarget;
+        console.log
+        setFormDataNewIntervention((prev) => ({
+        ...prev,
+        [name]: value,
+        }))
+    }
+    const handleSubmitNewIntervention = async (event:React.FormEvent) => {
+        event.preventDefault();
+        const newIntervention = {
+            intervention_date_year : formDataNewIntervention.intervention_date_year?.toString(),
+            intervention_date_month : formDataNewIntervention.intervention_date_month?.toString(),
+            intervention_date_day : formDataNewIntervention.intervention_date_day?.toString(),
+            description: formDataNewIntervention.description,
+            foundationId : foundation.id
+        }
+        console.log("new intervention", newIntervention)
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/interventions/`, newIntervention)
+        setFormDataNewIntervention(emptyIntervention)
+        setCreatingNewIntervention(false)
+        getInterventionsData()
+    }
+
     return (
         <>
             {isFetching ? (
@@ -76,7 +111,7 @@ function FoundationDetails() {
                             <p className="mb-1 ">
                                 📍<span>Sede principal: </span>{foundation.city}, {foundation.department}
                             </p>
-                            <p className="description p-1 mb-1 text-xs text-justify">{foundation.description}</p>
+                            <p className="description p-2 mb-1 text-xs text-justify">{foundation.description}</p>
                             <div className="chips-container flex flex-wrap gap-1">
                                 {foundation.causes.map((eachCause) => {
                                     const foundCause = causas_arr.find((cause) => cause.name === eachCause);
@@ -94,9 +129,57 @@ function FoundationDetails() {
                             </div>
                         </div>
                         <Button as={Link} to={`/fundaciones/editar-fundacion/${foundation.id}`} className="edit-foundation absolute right-3" variant="secondary" size="sm" >Editar</Button>
-
+                        
+                        {/* INTERVENTIONS SECTION */}
                         <div className="interventions border-slate-500 my-2 rounded-2xl shadow-xl gap-3 p-3 w-[95%] md:max-w-[40%] md:m-auto flex flex-col md:min-h-[200px] items-center">
-                            <p className=" font-medium text-xl text-gray-500">Intervenciones recientes</p>
+                            <p className=" font-medium text-xl text-gray-500 mb-0">Intervenciones recientes</p>
+                            <Button variant="outline-primary" size="sm" className="mt-0" onClick={()=> setCreatingNewIntervention(true)}>
+                                Nueva intervención
+                            </Button>
+
+                            {
+                                creatingNewIntervention?(
+                                    <form onSubmit={handleSubmitNewIntervention}>
+                                    <div className={`new-intervention-card min-w-[95%] relative flex flex-col gap-3 px-4 pt-3 pb-2 bg-slate-100 border rounded-xl shadow-sm hover:shadow-md`}>
+                                        <div className="flex gap-2 items-center">
+                                        <input type="text" placeholder="Día" 
+                                                className="w-[25%] py-0.5 px-1 border-1 border-slate-300 bg-white/100"
+                                                value={formDataNewIntervention.intervention_date_day}
+                                                onChange={handleOnChange}
+
+                                        />
+                                        <input type="text" placeholder="Mes" 
+                                                className="w-[25%] py-0.5 px-1 border-1 border-slate-300 bg-white/100"
+                                                value={formDataNewIntervention.intervention_date_month}
+                                                onChange={handleOnChange}
+
+                                        />
+                                        <input required type="text" placeholder="Año" 
+                                                className="w-[25%] py-0.5 px-1 border-1 border-slate-300 bg-white/100"
+                                                name="intervention_date_year"
+                                                value={formDataNewIntervention.intervention_date_year}
+                                                onChange={handleOnChange}
+                                        />
+                                            
+                                        </div>
+                                        <textarea placeholder="Describe la intervención"
+                                                name="description" 
+                                                className="border-1 border-slate-300 p-1 bg-white/100"
+                                                required
+                                                value={formDataNewIntervention.description}
+                                                onChange={handleOnChange}
+
+                                        />
+                                        <div className="flex justify-around">
+                                            <Button variant="secondary" size="sm" onClick={()=>setCreatingNewIntervention(false)}>Cancelar</Button>
+                                            <Button size="sm" type="submit">Publicar</Button>
+                                        </div>
+                                    </div>
+                                    </form>
+                                ): null                            
+                            }
+
+                            {/* Display all interventions */}
                             {interventions.map((eachIntervention) => (
                                 <InterventionCard key={eachIntervention.id} intervention={eachIntervention} cardType={"foundationProfile"} getInterventionsData={getInterventionsData}/>
                             ))

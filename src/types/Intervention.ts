@@ -1,7 +1,7 @@
 export type Intervention = {
-    id: string | number;
+    id?: string | number;
     foundationId: string | number;
-    foundation: {
+    foundation?: {
         id?: string | number;
         name: string;
         logo: string;

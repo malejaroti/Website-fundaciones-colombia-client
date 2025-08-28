@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactEventHandler } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RiEditFill } from "react-icons/ri";
 import { FaTrash } from "react-icons/fa";
 import Modal from 'react-bootstrap/Modal';
@@ -50,24 +50,29 @@ function formatInterventionDate(i: any, locale: string = "es-CO"): string {
     // Day without month is ambiguous; show year only per requirement
     return String(year);
 }
+interface InterventionCardProps {
+    intervention: Intervention;
+    cardType: string;
+    getInterventionsData?: () => Promise<void>;
+}
 
-function InterventionCard({ intervention, cardType, getInterventionsData }) {
+function InterventionCard({ intervention, cardType, getInterventionsData }: InterventionCardProps) {
 
     const [show, setShow] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [draft, setDraft] = useState(intervention.description);
     const draftRef = useRef<HTMLParagraphElement>(null)
 
-    useEffect(() => { 
-        if (isEditing && draftRef.current){
-            draftRef.current.textContent = draft; 
+    useEffect(() => {
+        if (isEditing && draftRef.current) {
+            draftRef.current.textContent = draft;
         }
     }, [isEditing]);
 
     const handleClose = () => setShow(false);
 
     const handleConfirmDeletion = () => {
-        getInterventionsData()
+        getInterventionsData?.()
         setShow(false);
     }
 
@@ -104,7 +109,7 @@ function InterventionCard({ intervention, cardType, getInterventionsData }) {
         <>
             <div
                 key={intervention.id}
-                className="intervention-card min-w-[95%] relative flex flex-col gap-3 p-4 bg-white/90 border border-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-200"
+                className="intervention-card min-w-[100%] relative flex flex-col gap-3 px-4 pt-3 pb-2 bg-white/90 border border-slate-200 rounded-xl shadow-sm hover:shadow-md"
             >
                 <div className="absolute left-0 top-0 h-full w-1 rounded-l-xl bg-gradient-to-b from-blue-500 to-pink-500" aria-hidden />
 
@@ -132,7 +137,7 @@ function InterventionCard({ intervention, cardType, getInterventionsData }) {
                     suppressContentEditableWarning={true}
                     onInput={handleInterventionDescriptionChange}
                 >
-                     {!isEditing ? draft : null} 
+                    {!isEditing ? draft : null}
                 </p>
 
                 <div className={`flex gap-4 ${isEditing ? `block` : "hidden"}`}>
@@ -140,10 +145,11 @@ function InterventionCard({ intervention, cardType, getInterventionsData }) {
                     <Button onClick={handleSaveChanges}>Guardar Cambios</Button>
                 </div>
 
-                <div className={`flex gap-1 absolute right-3 top-2.5 ${cardType === "foundationProfile" ? "block" : "hidden"}`}>
+                <div className={`icons flex gap-1 absolute right-3 top-4 ${cardType === "foundationProfile" ? "block" : "hidden"}`}>
                     <RiEditFill className="text-slate-300 size-4" onClick={handleClickOnEdit} />
                     <FaTrash className="text-slate-300 size-4" onClick={handleClickOnTrash} />
                 </div>
+
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Eliminar intervención</Modal.Title>

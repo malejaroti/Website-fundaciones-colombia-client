@@ -7,6 +7,7 @@ import MySelect from "../components/Select";
 import { useNavigate } from "react-router-dom";
 
 export type Foundation = {
+    id?: string, 
     name: string;
     description: string;
     department: string;
