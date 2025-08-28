@@ -162,10 +162,15 @@ function EditFoundation() {
           <input className="w-full mt-0 italic border border-slate-300 p-2 rounded-sm mb-3" name="instagram" type="text" value={formData.instagram} onChange={handleOnChange} />
         </label>
 
+        <div className=" flex justify-center gap-5 my-3">
 
-        <Button className="m-5 p-3 rounded-sm text-cyan-700 md:cursor-pointer shadow-md shadow-blue-300 hover:relative hover:top-0.5 hover:left-0.5" type="submit">
-          Guardar Cambios
-        </Button>
+          <Button variant="secondary" type="button" onClick={() => navigate(-1)}>
+            Cancelar
+          </Button>
+          <Button variant="primary"  type="submit">
+            Guardar Cambios
+          </Button>
+        </div>
       </form>
     </div>
   )
