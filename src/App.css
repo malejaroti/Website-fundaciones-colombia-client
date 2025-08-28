@@ -1,10 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap");
+/* stylelint-disable-next-line import-notation */
 @import "tailwindcss";
-#root {
-}
 
-select {
-  border: 1px rgb(209, 208, 208) solid;
+/* #root {
+} */
+
+.my-select {
+  border: 1px rgb(209 208 208) solid;
   border-radius: 3px;
   padding: 2px;
   text-align: center;
@@ -17,10 +19,9 @@ select {
   display: flex;
   gap: 10px;
   justify-content: space-between;
-  /* border: 2px red solid; */
   width: 90%;
 }
 
 .font-montserrat{
-  font-family: "Montserrat";
+  font-family: Montserrat, sans-serif;
 }
