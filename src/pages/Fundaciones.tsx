@@ -77,122 +77,216 @@ function Fundaciones() {
 
         if (depto) {
             setDepartment(depto);
-            console.log("depto :", depto)
         } else {
             setDepartment({ name: "", cities: [] });
         }
-    }
+    };
 
-    const handleOnClickOnFoundationName = (e: React.MouseEvent<HTMLHeadingElement>) => {
-        const foundation = allFoundations.find((f) => f.name === e.currentTarget.textContent);      
-        if(foundation){
-            navigate(`/fundaciones/${foundation.id}`)
+    const handleOnClickOnFoundationName = (
+        e: React.MouseEvent<HTMLHeadingElement>
+    ) => {
+        const foundation = allFoundations.find(
+            (f) => f.name === e.currentTarget.textContent
+        );
+        if (foundation) {
+            navigate(`/fundaciones/${foundation.id}`);
         }
-    }
+    };
 
     const filteredFoundations = allFoundations
-        .filter((foundation) => (searchedValue ? foundation.name.includes(searchedValue) : true))
-        .filter((foundation) => (department.name ? department.name === foundation.department : true))
-        .filter((foundation) => (selectedCause ? foundation.causes.includes(selectedCause) : true));
+        .filter((foundation) =>
+            searchedValue
+                ? foundation.name
+                    .toLowerCase()
+                    .includes(searchedValue.toLowerCase())
+                : true
+        )
+        .filter((foundation) =>
+            department.name ? department.name === foundation.department : true
+        )
+        .filter((foundation) =>
+            selectedCause ? foundation.causes.includes(selectedCause) : true
+        );
+
     return (
-        <>
-            {/* Search bar */}
-            <div className="h-[50px] flex items-center justify-center">
-                <input type="text" placeholder="Search foundation by name"
-                    className=" w-9/10 text-center border-slate-400 border rounded-sm" 
-                    value={searchedValue}
-                    onChange={(e) => setSearchedValue(e.target.value)}/>
+        <main className="font-montserrat">
+            {/* Page header, aligned with Home's gradient vibe */}
+            <header className="p-6 md:p-8 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white shadow-lg mb-6">
+                <div className="max-w-6xl mx-auto">
+                    <h1 className="text-2xl md:text-3xl font-semibold drop-shadow">Explora fundaciones</h1>
+                    <p className="text-sm md:text-base opacity-90">
+                        Busca por nombre, filtra por departamento y causa.
+                    </p>
+                </div>
+            </header>
 
-            </div>
-
-            {/* Search filters */}
-            <div className="filters flex flex-col justify-around md:flex-row items-center gap-2 p-2 ">
-                <div className="selector-row flex gap-2">
-                    <label > Departmento: </label>
-                    <MySelect array={departamentos_ciudades_Colombia} name="department" id="department-select2" onChange={handleDepartmentSelect}></MySelect>
+            <div className="max-w-6xl mx-auto px-4">
+                {/* Search bar */}
+                <div className="mb-4">
+                    <div className="bg-white rounded-2xl shadow-md ring-1 ring-gray-100 p-3 md:p-4">
+                        <input
+                            type="text"
+                            placeholder="Buscar fundación por nombre"
+                            className="w-full text-sm md:text-base px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 placeholder:text-gray-400"
+                            value={searchedValue}
+                            onChange={(e) => setSearchedValue(e.target.value)}
+                        />
+                    </div>
                 </div>
 
-                <div className="selector-row flex gap-2">
-                    <label > Ciudad: </label>
-                    <MySelect
-                        array={["Selecciona un departamento", ...department.cities]}
-                        name="city"
-                        id="city-select"
-                        onChange={handleDepartmentSelect}
-                    ></MySelect>
-                </div>
-
-                <div className="selector-row flex gap-2">
-                    <label > Causas: </label>
-                    <MySelect array={causas_arr} otherAtributes={""} name="cause" id="cause-select"  
-                    value={selectedCause} onChange={(e) => setSelectedCause(e.target.value)}></MySelect>
-                </div>
-
-            </div>
-            <hr className="w-[90%] text-center m-auto text-slate-50 my-2" />
-
-            {/* All foundations searched */}
-            <div className="cards-container flex flex-wrap items-center justify-center px-4">
-                {
-                    isFetching ?(
-                        <h1 className="text-center">Cargando fundaciones ...</h1>
-
-                    ): filteredFoundations.length === 0 ? (
-                        <p className="my-6 text-slate-600 text-center">
-                        {selectedCause
-                            ? `Lo siento, no encontramos ninguna fundación con la causa “${selectedCause}”.`
-                            : "Lo siento, no encontramos ninguna fundación."}
-                        </p>
-                    ) :
-                    filteredFoundations.map((foundation) => {
-                        return <div key={foundation.name} className="foundation-card relative border border-slate-500 my-2 rounded-2xl shadow-xl gap-3 p-3 w-[95%]  md:m-auto flex md:min-h-[200px] items-center">
-                            <div className="self-start flex flex-col items-center gap-4">
-                                {foundation.logo && 
-                                    <img className="foundation-logo self-start mt-2 min-w-20 h-20 shadow-2xl rounded-sm text-xs" src={foundation.logo} alt={`Logo ${foundation.name}`} />
-                                }
-                                <div className="socials left-[20px] bottom-[10px] flex gap-2 md:gap-3">
-                                    {foundation.website? (
-                                        <a href={foundation.website} target="_blank" rel="noopener noreferrer">
-                                            <img src={iconGoToWebsite} alt="Icon for go to website" className="w-6 h-6" />
-                                        </a>
-                                        ): (null)}
-                                    {foundation.linkedIn? (
-                                        <a href={foundation.linkedIn} target="_blank" rel="noopener noreferrer">
-                                            <img src="/LinkedIn-logo.png" alt="LinkedIn logo" className="w-6 h-6" />
-                                        </a>
-                                    ): (null)}
-
-                                    {foundation.instagram? (
-                                        <a href={foundation.instagram} target="_blank" rel="noopener noreferrer">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram logo" className="w-6 h-6" />
-                                        </a>
-                                    ): (null)}
-                                </div>
-
-                            </div>
-                            <div className="card-text-side text-sm">
-                                <h2 className=" mb-1 text-base font-bold text-amber-950" onClick={handleOnClickOnFoundationName} >{foundation.name}</h2>
-                                <p className="mb-1 ">📍{foundation.city}, {foundation.department}</p>
-                                <p className="description p-1 mb-1 text-xs lg:text-lg">{foundation.description}</p>
-                                <div className="chips-container flex flex-wrap gap-1">
-                                    {foundation.causes.map((eachCause) => {
-                                        const foundCause = causas_arr.find((cause) => cause.name === eachCause)
-                                        if (!foundCause) return null;
-                                        return (
-                                            <Chip
-                                                key={foundCause.name}
-                                                label={foundCause.name}
-                                                color={foundCause.color}
-                                            />
-                                        )
-                                    })}
-                                </div>
-                            </div>
+                {/* Filters panel */}
+                <section className="bg-white rounded-2xl shadow-md ring-1 ring-gray-100 p-4 md:p-6 mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="flex flex-col gap-1">
+                            <label className="text-xs md:text-sm font-medium text-gray-600">
+                                Departamento
+                            </label>
+                            <MySelect
+                                array={departamentos_ciudades_Colombia}
+                                name="department"
+                                id="department-select2"
+                                onChange={handleDepartmentSelect}
+                            />
                         </div>
-                    })
-                }
+
+                        <div className="flex flex-col gap-1">
+                            <label className="text-xs md:text-sm font-medium text-gray-600">
+                                Ciudad
+                            </label>
+                            <MySelect
+                                array={["Selecciona un departamento", ...department.cities]}
+                                name="city"
+                                id="city-select"
+                                onChange={handleDepartmentSelect}
+                            />
+                        </div>
+
+                        <div className="flex flex-col gap-1">
+                            <label className="text-xs md:text-sm font-medium text-gray-600">
+                                Causa
+                            </label>
+                            <MySelect
+                                array={causas_arr}
+                                otherAtributes={""}
+                                name="cause"
+                                id="cause-select"
+                                value={selectedCause}
+                                onChange={(e) => setSelectedCause(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                </section>
+
+                {/* Results */}
+                <section>
+                    {isFetching ? (
+                        <p className="text-center text-gray-500">Cargando fundaciones…</p>
+                    ) : filteredFoundations.length === 0 ? (
+                        <p className="my-6 text-slate-600 text-center">
+                            {selectedCause
+                                ? `Lo siento, no encontramos ninguna fundación con la causa “${selectedCause}”.`
+                                : "Lo siento, no encontramos ninguna fundación."}
+                        </p>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                            {filteredFoundations.map((foundation) => (
+                                <article
+                                    key={foundation.name}
+                                    className="relative overflow-hidden rounded-2xl bg-white shadow-md ring-1 ring-gray-100 hover:shadow-lg transition"
+                                >
+                                    {/* Accent bar */}
+                                    <span
+                                        aria-hidden
+                                        className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-blue-400 to-purple-400"
+                                    />
+
+                                    <div className="p-4 md:p-5 flex gap-4">
+                                        <div className="flex flex-col items-center gap-3">
+                                            {foundation.logo && (
+                                                <img
+                                                    className="mt-1 size-20 min-w-20 rounded-md object-cover ring-1 ring-gray-200 shadow"
+                                                    src={foundation.logo}
+                                                    alt={`Logo ${foundation.name}`}
+                                                />
+                                            )}
+                                            <div className="flex gap-2 md:gap-3">
+                                                {foundation.website ? (
+                                                    <a
+                                                        href={foundation.website}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="opacity-80 hover:opacity-100"
+                                                    >
+                                                        <img
+                                                            src={iconGoToWebsite}
+                                                            alt="Ir al sitio web"
+                                                            className="w-6 h-6"
+                                                        />
+                                                    </a>
+                                                ) : null}
+                                                {foundation.linkedIn ? (
+                                                    <a
+                                                        href={foundation.linkedIn}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="opacity-80 hover:opacity-100"
+                                                    >
+                                                        <img src="/LinkedIn-logo.png" alt="LinkedIn" className="w-6 h-6" />
+                                                    </a>
+                                                ) : null}
+                                                {foundation.instagram ? (
+                                                    <a
+                                                        href={foundation.instagram}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="opacity-80 hover:opacity-100"
+                                                    >
+                                                        <img
+                                                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png"
+                                                            alt="Instagram"
+                                                            className="w-6 h-6"
+                                                        />
+                                                    </a>
+                                                ) : null}
+                                            </div>
+                                        </div>
+
+                                        <div className="flex-1 min-w-0">
+                                            <h2
+                                                className="mb-1 text-base md:text-lg font-bold text-amber-950 cursor-pointer hover:underline underline-offset-2"
+                                                onClick={handleOnClickOnFoundationName}
+                                            >
+                                                {foundation.name}
+                                            </h2>
+                                            <p className="mb-1 text-gray-600">📍{foundation.city}, {foundation.department}</p>
+                                            <p className="mb-2 text-sm md:text-base text-gray-700">
+                                                {foundation.description}
+                                            </p>
+                                            <div className="flex flex-wrap gap-1">
+                                                {foundation.causes.map((eachCause) => {
+                                                    const foundCause = causas_arr.find(
+                                                        (cause) => cause.name === eachCause
+                                                    );
+                                                    if (!foundCause) return null;
+                                                    return (
+                                                        <Chip
+                                                            key={foundCause.name}
+                                                            label={`${foundCause.icon} ${foundCause.name}`}
+                                                            color={foundCause.color}
+                                                        />
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            ))}
+                        </div>
+                    )}
+                </section>
             </div>
-        </>
-    )
+        </main>
+    );
 }
-export default Fundaciones                      
+
+export default Fundaciones;
