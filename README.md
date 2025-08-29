@@ -1,8 +1,11 @@
 # Website - Fundaciones Colombia
 
-## [See the App!](https://fundaciones-colombia.netlify.app/)
-
-<img src="public/fundaciones-colombia-logo2.png" alt="App Logo" width="150" />
+>
+<div style="display: flex; align-items: center; gap: 12px;">
+    <img src="public/fundaciones-colombia-logo2.png" alt="App Logo" width="40" height="50" />
+    <a href="https://fundaciones-colombia.netlify.app/" style="font-size: 1.2em; font-weight: bold;">See the App!</a>
+</div>
+    <img src="public/screenshot-home-page.jpg" alt="App Logo" width="300" height="200" />
 
 ## Description
 
