@@ -4,11 +4,9 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import logo from '../assets/fundaciones-colombia-logo2.png';
-import { useState } from "react";
 
 function MyNavbar() {
 
-    const [expanded, setexpanded] = useState(false);
     return (
         <>
             <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary shadow-lg border-b-1 border-slate-500" fixed="top">
