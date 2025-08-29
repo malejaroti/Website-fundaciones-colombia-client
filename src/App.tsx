@@ -10,14 +10,16 @@ import AboutPage from './pages/AboutPage'
 import NotFoundPage from './pages/NotFoundPage'
 import EditFoundation from './pages/EditFoundation';
 import InterventionsPage from './pages/InterventionsPage';
+import Footer from './components/Footer';
 
 function App() {
 
   return (
-    <>
-      <MyNavbar></MyNavbar>
+    <div className="min-h-screen flex flex-col">
+      <MyNavbar />
 
-      <div className="h-screen mt-[66px]">
+      {/* Main content area with top margin to clear fixed navbar */}
+      <div className="flex-1 mt-[66px]">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/fundaciones" element={<Fundaciones />} />
@@ -30,7 +32,8 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
-    </>
+      <Footer />
+    </div>
   )
 }
 
