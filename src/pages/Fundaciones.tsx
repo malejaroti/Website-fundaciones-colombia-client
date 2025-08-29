@@ -3,7 +3,7 @@ import { causas_arr } from "../data/causes_arr";
 import { departamentos_ciudades_Colombia, type Departamento } from "../data/departments-cities";
 import axios from "axios";
 import Chip from "../components/Chip";
-import MySelect from "../components/Select";
+import MySelect from "../components/MySelect";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import iconGoToWebsite from "../assets/icon-go-to-website.png";
 

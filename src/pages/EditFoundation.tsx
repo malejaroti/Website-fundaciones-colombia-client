@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { departamentos_ciudades_Colombia } from "../data/departments-cities";
 import { causas_arr } from "../data/causes_arr";
 
-import MySelect from "../components/Select";
+import MySelect from "../components/MySelect.tsx";
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
 import axios from "axios";
