@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
-import { departamentos_ciudades_Colombia, type Departamento } from "../data/departments-cities";
+import { departamentos_ciudades_Colombia } from "../data/departments-cities";
 import { causas_arr } from "../data/causes_arr";
 
 import MySelect from "../components/Select";
@@ -15,11 +15,6 @@ function EditFoundation() {
   const params = useParams();
   const [isFetching, setIsFetching] = useState(false);
   const [cities, setCities] = useState<string[]>([]);
-
-  const [department, setDepartment] = useState<Departamento>({
-    "name": "",
-    "cities": []
-  });
 
   const emptyForm: Foundation = {
     name: "",
@@ -50,11 +45,9 @@ function EditFoundation() {
 
       const depto = departamentos_ciudades_Colombia.find((d) => d.name === data.department);
       if (depto) {
-        setDepartment(depto);
         setCities(depto.cities);
         // console.log("cities:", cities)
       } else {
-        setDepartment({ name: "", cities: [] });
         setCities([]);
       }
 
@@ -81,10 +74,8 @@ function EditFoundation() {
     if (name === "department") {
       const depto = departamentos_ciudades_Colombia.find((d) => d.name === value);
       if (depto) {
-        setDepartment(depto);
         setCities(depto.cities);
       } else {
-        setDepartment({ name: "", cities: [] });
         setCities([]);
       }
     }
@@ -106,18 +97,18 @@ function EditFoundation() {
       <form onSubmit={handleSubmit} className="form m-auto p-2 text-center border w-[90%] flex flex-col">
 
         <label className="text-left">Nombre
-          <input required className="w-full  mt-0 italic border border-slate-300 p-2 rounded-sm mb-3" name="name" type="text" value={formData.name} onChange={handleOnChange} />
+          <input required className="w-full  mt-0 italic border border-slate-300 p-2 rounded-sm mb-3" name="name" type="text" value={formData.name} onChange={handleOnChange} disabled={isFetching} />
         </label>
 
         <label className="text-left">Descripción
-          <textarea required className="w-full min-h-[150px] italic border border-slate-300 p-2 rounded-sm mb-3" name="description" value={formData.description} onChange={handleOnChange} placeholder="Describe la misión de la fundación brevemente"></textarea>
+          <textarea required className="w-full min-h-[150px] italic border border-slate-300 p-2 rounded-sm mb-3" name="description" value={formData.description} onChange={handleOnChange} placeholder="Describe la misión de la fundación brevemente" disabled={isFetching}></textarea>
         </label>
 
         <label className="text-left"> Logo
           {formData.logo && (
             <img src={formData.logo} alt="Foundation logo" className="w-20 h-20 m-2 border border-slate-400" />
           )}
-          <input className="w-full break-all mt-0 italic border border-slate-300 p-2 rounded-sm mb-3" name="logo" type="text" placeholder="URL de logo de la fundación" value={formData.logo} onChange={handleOnChange} />
+          <input className="w-full break-all mt-0 italic border border-slate-300 p-2 rounded-sm mb-3" name="logo" type="text" placeholder="URL de logo de la fundación" value={formData.logo} onChange={handleOnChange} disabled={isFetching} />
         </label>
         <label className="text-left"> Causas
           <Select
@@ -129,10 +120,11 @@ function EditFoundation() {
             value={formData.causes.map((c) => ({ value: c, label: c }))}
             onChange={(selectedOptions) => {
               setFormData((prev) => ({
-          ...prev,
-          causes: selectedOptions ? selectedOptions.map((opt) => opt.value) : [],
+                ...prev,
+                causes: selectedOptions ? selectedOptions.map((opt) => opt.value) : [],
               }));
             }}
+            isDisabled={isFetching}
           />
         </label>
 
@@ -141,30 +133,30 @@ function EditFoundation() {
         <h5>Ubicación Sede Principal</h5>
         <label className="text-left"> Departamento </label>
         <MySelect array={departamentos_ciudades_Colombia} name="department" id="department-select2"
-          value={formData.department} onChange={handleOnChange}></MySelect>
+          value={formData.department} onChange={handleOnChange} disabled={isFetching}></MySelect>
 
         <label className="text-left"> Ciudad
-          <MySelect array={cities} name="city" id="city-select2" value={formData.city} onChange={handleOnChange}></MySelect>
+          <MySelect array={cities} name="city" id="city-select2" value={formData.city} onChange={handleOnChange} disabled={isFetching}></MySelect>
         </label>
 
         <br />
         <h5>Redes sociales</h5>
         <label className="text-left"> Website
-          <input className="w-full mt-0 italic border border-slate-300 p-2 rounded-sm mb-3" name="website" type="text" value={formData.website} onChange={handleOnChange} />
+          <input className="w-full mt-0 italic border border-slate-300 p-2 rounded-sm mb-3" name="website" type="text" value={formData.website} onChange={handleOnChange} disabled={isFetching} />
         </label>
         <label className="text-left"> LinkedIn
-          <input className="w-full mt-0 italic border border-slate-300 p-2 rounded-sm mb-3" name="linkedin" type="text" value={formData.linkedIn} onChange={handleOnChange} />
+          <input className="w-full mt-0 italic border border-slate-300 p-2 rounded-sm mb-3" name="linkedIn" type="text" value={formData.linkedIn} onChange={handleOnChange} disabled={isFetching} />
         </label>
         <label className="text-left"> Instagram
-          <input className="w-full mt-0 italic border border-slate-300 p-2 rounded-sm mb-3" name="instagram" type="text" value={formData.instagram} onChange={handleOnChange} />
+          <input className="w-full mt-0 italic border border-slate-300 p-2 rounded-sm mb-3" name="instagram" type="text" value={formData.instagram} onChange={handleOnChange} disabled={isFetching} />
         </label>
 
         <div className=" flex justify-center gap-5 my-3">
 
-          <Button variant="secondary" type="button" onClick={() => navigate(-1)}>
+          <Button variant="secondary" type="button" onClick={() => navigate(-1)} disabled={isFetching}>
             Cancelar
           </Button>
-          <Button variant="primary"  type="submit">
+          <Button variant="primary" type="submit" disabled={isFetching}>
             Guardar Cambios
           </Button>
         </div>
