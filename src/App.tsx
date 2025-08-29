@@ -15,7 +15,7 @@ import Footer from './components/Footer';
 function App() {
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       <MyNavbar />
 
       {/* Main content area with top margin to clear fixed navbar */}
