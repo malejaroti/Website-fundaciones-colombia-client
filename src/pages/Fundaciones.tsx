@@ -19,6 +19,7 @@ export type Foundation = {
   linkedIn: string;
   instagram: string;
   website: string;
+  interventions?: string[]
 };
 
 function Fundaciones() {
@@ -109,16 +110,16 @@ function Fundaciones() {
 
         {/* Filters panel */}
         <section className="bg-white rounded-2xl shadow-md ring-1 ring-gray-100 p-4 md:p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4">
             <div className="flex flex-col gap-1">
               <label className="text-xs md:text-sm font-medium text-gray-600">Departamento</label>
               <MySelect array={departamentos_ciudades_Colombia} name="department" id="department-select2" onChange={handleDepartmentSelect} />
             </div>
 
-            <div className="flex flex-col gap-1">
+            {/* <div className="flex flex-col gap-1">
               <label className="text-xs md:text-sm font-medium text-gray-600">Ciudad</label>
               <MySelect array={["Selecciona un departamento", ...department.cities]} name="city" id="city-select" onChange={handleDepartmentSelect} />
-            </div>
+            </div> */}
 
             <div className="flex flex-col gap-1">
               <label className="text-xs md:text-sm font-medium text-gray-600">Causa</label>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState, type ReactEventHandler } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { Foundation } from "./Fundaciones.tsx";
 import type { Intervention } from "../types/Intervention";
@@ -7,6 +7,8 @@ import { causas_arr } from "../data/causes_arr";
 import Chip from "../components/Chip.tsx";
 import Button from 'react-bootstrap/Button';
 import InterventionCard from "../components/InterventionCard.tsx";
+import iconGoToWebsite from "../assets/icon-go-to-website.png";
+
 
 
 function FoundationDetails() {
@@ -97,29 +99,26 @@ function FoundationDetails() {
             {isFetching ? (
                 <h1 className="text-center">Loading foundation data ...</h1>
             ) : foundation !== null ? (
-                <>
+                <main className="pt-10 lg:mx-80">
                     <Link to={`/fundaciones/`} >
                         <p className="btn-back underline ml-3 mb-0 "  >Todas las fundaciones</p>
                     </Link>
 
-                    <div className="page border-1 border-slate-500 my-2 rounded-2xl shadow-xl py-3 items-center flex flex-col">
+                    <div className="page relative border-slate-500 mx-3 rounded-2xl shadow-xl py-3 items-center flex flex-col">
                         <img className="foundation-logo mt-2 min-w-20 h-20 shadow-2xl rounded-sm text-xs" src={foundation.logo === "" ? undefined : foundation.logo} alt={`Logo ${foundation.name}`} />
                         <div className="foundation-card relative  gap-2 p-3 w-[95%] md:max-w-[40%] md:m-auto flex flex-col md:min-h-[200px] items-center">
-                            <h1 className=" mb-1 text-base font-bold text-amber-950">
+                            <h1 className=" mb-1 text-base text-center font-bold text-amber-950">
                                 {foundation.name}
                             </h1>
-                            <p className="mb-1 ">
+                            <p className="mb-1 lg:text-lg">
                                 📍<span>Sede principal: </span>{foundation.city}, {foundation.department}
                             </p>
-                            <p className="description p-2 mb-1 text-xs text-justify">{foundation.description}</p>
-                            <div className="chips-container flex flex-wrap gap-1">
-                                {foundation.causes.map((eachCause) => {
-                                    const foundCause = causas_arr.find((cause) => cause.name === eachCause);
-                                    if (!foundCause) return null;
-                                    return <Chip key={foundCause.name} label={foundCause.name} color={foundCause.color} />;
-                                })}
-                            </div>
-                            <div className="socials left-[20px] bottom-[10px] w-full flex justify-center gap-3 md:gap-3">
+                            <div className="socials left-[20px] bottom-[10px] w-full flex justify-center gap-3 lg:mb-5 lg:gap-3">
+                                {foundation.website ? (
+                                    <a href={foundation.website} target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100">
+                                    <img src={iconGoToWebsite} alt="Ir al sitio web" className="w-6 h-6" />
+                                    </a>
+                                ) : null}
                                 <a href={foundation.linkedIn} target="_blank" rel="noopener noreferrer">
                                     <img src="/LinkedIn-logo.png" alt="LinkedIn logo" className="w-6 h-6" />
                                 </a>
@@ -127,9 +126,34 @@ function FoundationDetails() {
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram logo" className="w-6 h-6" />
                                 </a>
                             </div>
+                            <p className="description p-2 mb-1 text-xs text-justify lg:text-lg">{foundation.description}</p>
+                            <div className="chips-container flex flex-wrap gap-1">
+                                {foundation.causes.map((eachCause) => {
+                                    const foundCause = causas_arr.find((cause) => cause.name === eachCause);
+                                    if (!foundCause) return null;
+                                    return <Chip key={foundCause.name} label={foundCause.name} color={foundCause.color} />;
+                                })}
+                            </div>
+                            {
+                                foundation.interventions?
+                                    <section className="border border-slate-200 p-3">
+                                        <h5>Tipo de intervenciones</h5>
+                                        {
+                                            <ul className="list-disc ml-4">
+                                                {foundation.interventions.map((interventionType: string) => (
+                                                    <li key={interventionType} className="text-sm">{interventionType}</li>
+                                                ))}
+                                            </ul>
+                                        }
+                                    </section>
+                                :null
+                            }
                         </div>
-                        <Button as={Link} to={`/fundaciones/editar-fundacion/${foundation.id}`} className="edit-foundation absolute right-3" variant="secondary" size="sm" >Editar</Button>
-                        
+                        <Link to={`/fundaciones/editar-fundacion/${foundation.id}`} className="absolute top-3 right-3" >
+                            <Button className="edit-foundation" variant="secondary" size="sm">
+                                    Editar
+                            </Button>
+                        </Link>
                         {/* INTERVENTIONS SECTION */}
                         <div className="interventions border-slate-500 my-2 rounded-2xl shadow-xl gap-3 p-3 w-[95%] md:max-w-[40%] md:m-auto flex flex-col md:min-h-[200px] items-center">
                             <p className=" font-medium text-xl text-gray-500 mb-0">Intervenciones recientes</p>
@@ -180,14 +204,14 @@ function FoundationDetails() {
                             }
 
                             {/* Display all interventions */}
-                            {interventions.map((eachIntervention) => (
+                            {interventions.map((eachIntervention : Intervention) => (
                                 <InterventionCard key={eachIntervention.id} intervention={eachIntervention} cardType={"foundationProfile"} getInterventionsData={getInterventionsData}/>
                             ))
                             }
                         </div>
 
                     </div>
-                </>
+                </main>
             ) : (
                 <h1>Foundation is null </h1>
             )
