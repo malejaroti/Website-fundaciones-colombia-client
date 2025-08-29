@@ -127,21 +127,24 @@ function FoundationDetails() {
                                 </a>
                             </div>
                             <p className="description p-2 mb-1 text-xs text-justify lg:text-lg">{foundation.description}</p>
-                            <div className="chips-container flex flex-wrap gap-1">
+
+                            {/* Chips causes  */}
+                            <div className="chips-container flex flex-wrap gap-1 lg:gap-5 justify-center">
                                 {foundation.causes.map((eachCause) => {
                                     const foundCause = causas_arr.find((cause) => cause.name === eachCause);
                                     if (!foundCause) return null;
                                     return <Chip key={foundCause.name} label={foundCause.name} color={foundCause.color} />;
                                 })}
                             </div>
+                            {/* INTERVENTIONS TYPES SECTION */}
                             {
                                 foundation.interventions?
-                                    <section className="border border-slate-200 p-3">
+                                    <section className="border border-slate-200 p-3 lg:mt-5">
                                         <h5>Tipo de intervenciones</h5>
                                         {
                                             <ul className="list-disc ml-4">
                                                 {foundation.interventions.map((interventionType: string) => (
-                                                    <li key={interventionType} className="text-sm">{interventionType}</li>
+                                                    <li key={interventionType} className="text-sm lg:text-xl">{interventionType}</li>
                                                 ))}
                                             </ul>
                                         }
