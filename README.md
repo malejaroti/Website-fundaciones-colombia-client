@@ -1,4 +1,4 @@
-# Website - *Fundaciones Colombia*
+<img src="public/fundaciones-colombia-logo2.png" alt="App Logo" width="40" height="50" /> # Website - *Fundaciones Colombia*
 
 Visit the website: https://fundaciones-colombia.netlify.app/
 
