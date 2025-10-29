@@ -1,8 +1,8 @@
 # Website - *Fundaciones Colombia*
 
 Visit the website: https://fundaciones-colombia.netlify.app/
->
-<div style="display: flex; align-items: center; gap: '12px'; margin-bottom: 20px;">
+
+<div>
     <img src="public/fundaciones-colombia-logo2.png" alt="App Logo" width="40" height="50" />
     <p> Visit the website: https://fundaciones-colombia.netlify.app/ </p>/>
 </div>
