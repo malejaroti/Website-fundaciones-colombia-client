@@ -2,11 +2,6 @@
 
 Visit the website: https://fundaciones-colombia.netlify.app/
 
-<div>
-    <img src="public/fundaciones-colombia-logo2.png" alt="App Logo" width="40" height="50" />
-    <p> Visit the website: https://fundaciones-colombia.netlify.app/ </p>/>
-</div>
-
 <img src="public/screenshot-home-page.jpg" alt="Screenshot landing page website `Fundaciones Colombia`" width="300" height="200" />
 
 ## Description
