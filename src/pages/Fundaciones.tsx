@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { causas_arr } from "../data/causes_arr";
 import { departamentos_ciudades_Colombia, type Departamento } from "../data/departments-cities";
-import axios from "axios";
+import api from "../services/config.services";
 import Chip from "../components/Chip";
 import MySelect from "../components/MySelect";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import iconGoToWebsite from "../assets/icon-go-to-website.png";
+import {RingLoader} from "react-spinners";
 
 export type Foundation = {
   id?: string;
@@ -58,10 +59,10 @@ function Fundaciones() {
   const getData = async () => {
     try {
       setIsFetching(true);
-      const responseApi = await axios.get(`${import.meta.env.VITE_SERVER_URL}/foundations/`);
+      const responseApi = await api.get(`/foundations`);
       // console.log(`Response API:`, responseApi.data);
       setAllFoundations(responseApi.data);
-      setIsFetching(false);
+      // setIsFetching(false);
     } catch (error) {
       console.log(error);
     }
@@ -99,7 +100,20 @@ function Fundaciones() {
           <p className="text-sm md:text-base opacity-90">Busca por nombre, filtra por departamento y causa.</p>
         </div>
       </header>
-
+      {isFetching ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="flex flex-col items-center">
+            <RingLoader
+              color={'#79a4aa'}
+              loading={isFetching}
+              size={80}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+            <p className="text-center text-gray-500 mt-4">Cargando fundaciones</p>
+          </div>
+        </div>
+      ) :
       <div className="max-w-6xl mx-auto px-4">
         {/* Search bar */}
         <div className="mb-4">
@@ -131,7 +145,7 @@ function Fundaciones() {
         {/* Results */}
         <section>
           {isFetching ? (
-            <p className="text-center text-gray-500">Cargando fundaciones…</p>
+            <p className="text-center text-gray-500">Buscando fundaciones…</p>
           ) : filteredFoundations.length === 0 ? (
             <p className="my-6 text-slate-600 text-center">{selectedCause ? `Lo siento, no encontramos ninguna fundación con la causa “${selectedCause}”.` : "Lo siento, no encontramos ninguna fundación."}</p>
           ) : (
@@ -186,6 +200,7 @@ function Fundaciones() {
           )}
         </section>
       </div>
+      }
     </main>
   );
 }
