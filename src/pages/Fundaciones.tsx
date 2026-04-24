@@ -60,11 +60,11 @@ function Fundaciones() {
     try {
       setIsFetching(true);
       const responseApi = await api.get(`/foundations`);
-      // console.log(`Response API:`, responseApi.data);
       setAllFoundations(responseApi.data);
-      // setIsFetching(false);
+      setIsFetching(false);
     } catch (error) {
       console.log(error);
+      setIsFetching(false);
     }
   };
 
