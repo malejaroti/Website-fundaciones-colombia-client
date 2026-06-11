@@ -60,7 +60,6 @@ function Fundaciones() {
   const getData = async () => {
     try {
       setIsFetching(true);
-      
       const responseApi = await api.get("/foundations");
       setAllFoundations(responseApi.data);
       setIsFetching(false);
