@@ -61,7 +61,7 @@ function Fundaciones() {
     try {
       setIsFetching(true);
       
-      const responseApi = await api.get("/api/foundations");
+      const responseApi = await api.get("/foundations");
       setAllFoundations(responseApi.data);
       setIsFetching(false);
     } catch (error) {

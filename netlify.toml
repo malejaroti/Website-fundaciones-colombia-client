@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/api/*"
+  to = "http://fundaciones-colombia-api-springb-env.eba-upg6qcp3.eu-central-1.elasticbeanstalk.com/:splat"
+  status = 200
+  force = true
