@@ -7,6 +7,7 @@ import MySelect from "../components/MySelect";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import iconGoToWebsite from "../assets/icon-go-to-website.png";
 import {RingLoader} from "react-spinners";
+// import axios from "axios";
 
 export type Foundation = {
   id?: string;
@@ -59,7 +60,8 @@ function Fundaciones() {
   const getData = async () => {
     try {
       setIsFetching(true);
-      const responseApi = await api.get(`/foundations`);
+      
+      const responseApi = await api.get("/api/foundations");
       setAllFoundations(responseApi.data);
       setIsFetching(false);
     } catch (error) {
@@ -171,7 +173,7 @@ function Fundaciones() {
                         ) : null}
                         {foundation.instagram ? (
                           <a href={foundation.instagram} target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram" className="w-6 h-6" />
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" className="w-6 h-6" />
                           </a>
                         ) : null}
                       </div>
